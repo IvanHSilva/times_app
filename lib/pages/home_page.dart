@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:times_app/pages/home_controller.dart';
+import 'package:times_app/pages/team_page.dart';
 
 import '../models/team.dart';
 
@@ -33,6 +34,17 @@ class _HomePageState extends State<HomePage> {
             leading: Image.asset(table[i].symbol),
             title: Text(table[i].name),
             trailing: Text(table[i].points.toString()),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => TeamPage(
+                    key: Key(table[i].name),
+                    team: table[i],
+                  ),
+                ),
+              );
+            },
           );
         },
         separatorBuilder: (_, __) => const Divider(),
