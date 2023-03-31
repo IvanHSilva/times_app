@@ -1,16 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:times_app/models/team_title.dart';
 
 import '../models/team.dart';
+import 'add_title_page.dart';
 
 class TeamPage extends StatefulWidget {
-  Team team;
-  TeamPage({required Key key, required this.team}) : super(key: key);
+  final Team team;
+  const TeamPage({super.key, required this.team});
 
   @override
   State<TeamPage> createState() => _TeamPageState();
 }
 
 class _TeamPageState extends State<TeamPage> {
+  titlePage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => AddTitlePage(team: widget.team, onSave: addTitle),
+      ),
+    );
+  }
+
+  addTitle(TeamTitle title) {
+    setState(() {
+      widget.team.titles.add(title);
+    });
+
+    Navigator.pop(context);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Salvo com Sucesso!'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -19,6 +44,12 @@ class _TeamPageState extends State<TeamPage> {
         appBar: AppBar(
           backgroundColor: widget.team.color,
           title: Text(widget.team.name),
+          actions: [
+            IconButton(
+              onPressed: titlePage,
+              icon: const Icon(Icons.add),
+            ),
+          ],
           bottom: const TabBar(
             tabs: [
               Tab(
